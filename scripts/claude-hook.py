@@ -24,5 +24,5 @@ try:
     old = json.loads((state / 'previous-statusline.json').read_text())
     if old and old.get('type') == 'command':
         subprocess.run(old['command'],shell=True,input=raw,text=True,timeout=5)
-    else: print('UsageBar · 额度已同步',end='')
+    else: print('CCQuota · 额度已同步',end='')
 except (OSError,ValueError,subprocess.TimeoutExpired): pass

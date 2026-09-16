@@ -1,15 +1,15 @@
-# UsageBar
+# CCQuota
 
-> A small, local-first macOS menu bar companion for Codex and Claude Code usage.
+> A small, local-first macOS menu bar companion for Codex and Claude Code quota.
 
-![UsageBar preview](preview.png)
+![CCQuota preview](preview.png)
 
-UsageBar keeps two questions separate:
+CCQuota answers two related but different questions:
 
 1. **How much account quota remains?** Read from the provider's current quota endpoint and shown as a soft, time-based curve.
 2. **Which models used this Mac, and by how much?** Calculated from local session logs, with token totals and model shares.
 
-That distinction is intentional. Local token history is useful for understanding model mix, but it cannot be used to reverse-engineer an account's subscription quota, especially when the same account is used on more than one device.
+The distinction is intentional. Local token history helps explain model mix, but it cannot reverse-engineer an account's subscription quota, especially when the same account is used on more than one device.
 
 ## What it does
 
@@ -37,15 +37,15 @@ That distinction is intentional. Local token history is useful for understanding
 - Optional: Codex CLI, logged in with `codex login`
 - Optional: Claude Code with a Claude.ai Pro or Max subscription
 
-The checked-in app is source-only. `UsageBar.app`, Swift build output and local caches are ignored by Git. The included build script creates a local ad-hoc signed app for personal use; it is not notarized.
+The repository is source-only. `CCQuota.app`, the Swift build output and local caches are ignored by Git. The build script creates a local ad-hoc signed app for personal use; it is not notarized.
 
 ## Build and run
 
 ```sh
-git clone https://github.com/canaanyjn/usagebar.git
-cd usagebar
+git clone https://github.com/canaanyjn/ccquota.git
+cd ccquota
 ./scripts/build.sh
-open UsageBar.app
+open CCQuota.app
 ```
 
 For a package-only build:
@@ -58,7 +58,7 @@ swift build -c release
 
 ### Codex
 
-UsageBar starts the local Codex app server and calls `account/rateLimits/read`. It checks the normal `PATH`, Homebrew locations and common nvm locations. Credentials are handled by the existing Codex CLI; UsageBar does not copy or store them.
+CCQuota starts the local Codex app server and calls `account/rateLimits/read`. It checks the normal `PATH`, Homebrew locations and common nvm locations. Credentials are handled by the existing Codex CLI; CCQuota does not copy or store them.
 
 ```sh
 codex login
@@ -68,7 +68,7 @@ The account quota curve is provider data. It may include usage from other device
 
 ### Claude Code
 
-Choose **Connect / update Claude Code** in the `…` menu, then restart Claude Code and send a message. Claude Code exposes `rate_limits.five_hour` and `rate_limits.seven_day` to its status-line command; UsageBar records those fields locally.
+Choose **Connect / update Claude Code** in the `…` menu, then restart Claude Code and send a message. Claude Code exposes `rate_limits.five_hour` and `rate_limits.seven_day` to its status-line command; CCQuota records those fields locally.
 
 The connector:
 
@@ -76,6 +76,8 @@ The connector:
 - backs up the previous settings and status-line value under `~/Library/Application Support/UsageBar/`;
 - chains an existing command status line where it is safe to do so;
 - writes only quota metadata and timestamps, never prompts or response text.
+
+The legacy `UsageBar` support-directory name is kept intentionally so an upgrade does not lose existing Claude configuration, quota history or caches. New app branding is `CCQuota`; existing local support data remains compatible.
 
 Claude quota history begins after the connector is active and Claude Code has produced a response. Older history cannot be reconstructed from a missing status-line sample.
 
@@ -99,8 +101,8 @@ The summary is a local observation, not a billing statement. It does not claim t
 
 ```text
 Package.swift
-Sources/UsageBar/
-  UsageBar.swift       # menu bar lifecycle, refresh and provider state
+Sources/CCQuota/
+  CCQuota.swift        # menu bar lifecycle, refresh and provider state
   HistoryView.swift    # quota chart, range summary and model breakdown
   HistoryRange.swift   # date presets and custom date picker
 scripts/
@@ -125,13 +127,13 @@ The tests cover multi-day ranges, custom end boundaries, daylight-saving date ca
 
 ## Privacy and limitations
 
-UsageBar is local-first, but it reads local session metadata and writes quota snapshots to your user Library directory. Review the source before using it on a managed machine. No telemetry, network service or account database is included.
+CCQuota is local-first, but it reads local session metadata and writes quota snapshots to your user Library directory. Review the source before using it on a managed machine. No telemetry, network service or account database is included.
 
 The app does not provide API spending, monetary cost estimates, notifications, launch-at-login, cross-device token history or a provider-independent quota formula. Provider APIs and CLI fields can change; missing fields are shown as unavailable rather than guessed.
 
 ## Remove the Claude connector
 
-Quit UsageBar. Restore the `statusLine` value from `~/Library/Application Support/UsageBar/previous-statusline.json` in `~/.claude/settings.json`; if the saved value is `null`, remove the field. Edit only that field so later Claude settings are preserved, then remove the app and the UsageBar support directory if desired.
+Quit CCQuota. Restore the `statusLine` value from `~/Library/Application Support/UsageBar/previous-statusline.json` in `~/.claude/settings.json`; if the saved value is `null`, remove the field. Edit only that field so later Claude settings are preserved, then remove the app and the UsageBar support directory if desired.
 
 ## Contributing
 

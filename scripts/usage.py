@@ -41,7 +41,7 @@ def codex():
                 buffer += chunk
         raise RuntimeError('Codex 连接超时，请检查网络后刷新。')
     try:
-        send({'id':1,'method':'initialize','params':{'clientInfo':{'name':'usagebar','version':'0.1.0'}}})
+        send({'id':1,'method':'initialize','params':{'clientInfo':{'name':'ccquota','version':'0.1.0'}}})
         receive(1); send({'method':'initialized'})
         send({'id':2,'method':'account/rateLimits/read'})
         r = receive(2)

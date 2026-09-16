@@ -308,7 +308,7 @@ struct HistoryPanel: View {
             Button("连接 / 更新 Claude Code",action:onConnect)
             Button("数据说明") { showInfo = true }
             Divider()
-            Button("退出 UsageBar") { NSApplication.shared.terminate(nil) }
+            Button("退出 CCQuota") { NSApplication.shared.terminate(nil) }
         } label: {
             Group {
                 if loading { ProgressView().controlSize(.mini) }

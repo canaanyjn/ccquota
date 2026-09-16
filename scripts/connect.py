@@ -15,7 +15,7 @@ try:
         shutil.copy2(pathlib.Path(__file__).with_name('claude-hook.py'), state / 'claude-hook.py')
         data['statusLine'] = {'type':'command','command':command}
         settings.parent.mkdir(parents=True,exist_ok=True)
-        temp = settings.with_suffix('.usagebar.tmp')
+        temp = settings.with_suffix('.ccquota.tmp')
         temp.write_text(json.dumps(data,indent=2,ensure_ascii=False)); temp.replace(settings)
     shutil.copy2(pathlib.Path(__file__).with_name('claude-hook.py'), state / 'claude-hook.py')
     print('已连接。请重启 Claude Code，发送消息后同步额度。')

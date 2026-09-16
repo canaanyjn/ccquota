@@ -131,7 +131,7 @@ struct Dashboard: View {
     }
 }
 
-@main struct UsageBarApp: App {
+@main struct CCQuotaApp: App {
     @StateObject private var store = UsageStore()
     var body: some Scene {
         MenuBarExtra {

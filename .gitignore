@@ -1,6 +1,7 @@
 .build/
 .swiftpm/
 UsageBar.app/
+CCQuota.app/
 scripts/__pycache__/
 .DS_Store
 *.tmp
